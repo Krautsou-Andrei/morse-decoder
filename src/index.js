@@ -38,35 +38,48 @@ const MORSE_TABLE = {
 };
 
 function decode(expr) {
-  let regexp1 = /\S{10}/gi;
-  let input = expr.match(regexp1);
-  let array = [],
-    array2 = [],
-    array3 = [];
-  let result = "";
-  input.forEach((item) => {
-    let index = item.split("").findIndex((element) => element === "1");
-    console.log(item);
-    if (index > 0) array.push(item.slice(index));
-    else array.push(item);
-  });
-  let regexp2 = /\S{2}/gi;
-  array.forEach((item) => {
-    array2.push(item.match(regexp2));
-  });
-  array2.forEach((item) => {
-    array3.push(item.join("").replaceAll("10", ".").replaceAll("11", "-"));
-  });
-  let keys = Object.keys(MORSE_TABLE);
-  let values = Object.values(MORSE_TABLE);
-  array3.forEach((item) => {
-    for (let j = 0; j < keys.length; j++) {
-      if (item === keys[j]) {
-        result += values[j];
-      }
+  // write your solution here
+  let arrayWords = expr.split("**********");
+
+  let prase = "";
+
+  arrayWords.forEach((element) => {
+    let arrayLetters = [];
+    let word = "";
+    for (let i = 0; i < element.length / 10; i++) {
+      arrayLetters.push(element.slice(i * 10, i * 10 + 10));
     }
+
+    arrayLetters.forEach((element) => {
+      let arrayElementMorse = [];
+      let letterMorse = "";
+      let letter = "";
+      for (let i = 0; i < element.length / 2; i++) {
+        arrayElementMorse.push(element.slice(i * 2, i * 2 + 2));
+      }
+
+      arrayElementMorse.forEach((element) => {
+        if (element == "10") {
+          letterMorse = letterMorse + ".";
+        }
+        if (element == "11") {
+          letterMorse = letterMorse + "-";
+        }
+      });
+
+      function coding(letterMorse) {
+        letter = MORSE_TABLE[letterMorse];
+
+        word = word + letter;
+      }
+
+      coding(letterMorse);
+    });
+
+    prase = prase + " " + word;
   });
-  return result;
+
+  return prase.trim();
 }
 
 module.exports = {

@@ -38,48 +38,19 @@ const MORSE_TABLE = {
 };
 
 function decode(expr) {
-  // write your solution here
-  let arrayWords = expr.split("**********");
-
-  let prase = "";
-
-  arrayWords.forEach((element) => {
-    let arrayLetters = [];
-    let word = "";
-    for (let i = 0; i < element.length / 10; i++) {
-      arrayLetters.push(element.slice(i * 10, i * 10 + 10));
-    }
-
-    arrayLetters.forEach((element) => {
-      let arrayElementMorse = [];
-      let letterMorse = "";
-      let letter = "";
-      for (let i = 0; i < element.length / 2; i++) {
-        arrayElementMorse.push(element.slice(i * 2, i * 2 + 2));
-      }
-
-      arrayElementMorse.forEach((element) => {
-        if (element == "10") {
-          letterMorse = letterMorse + ".";
-        }
-        if (element == "11") {
-          letterMorse = letterMorse + "-";
-        }
+  const dashesAndDotArr = expr
+    .match(/.{1,10}/g)
+    .map((i) => i.match(/.{1,2}/g))
+    .map((it) => {
+      const arr = [];
+      it.forEach((item) => {
+        if (item === "10") arr.push(".");
+        if (item === "11") arr.push("-");
       });
-
-      function coding(letterMorse) {
-        letter = MORSE_TABLE[letterMorse];
-
-        word = word + letter;
-      }
-
-      coding(letterMorse);
+      return arr.join("");
     });
-
-    prase = prase + " " + word;
-  });
-
-  return prase.trim();
+  const res = dashesAndDotArr.map((i) => (i === "" ? " " : MORSE_TABLE[i])).join("");
+  return res;
 }
 
 module.exports = {
